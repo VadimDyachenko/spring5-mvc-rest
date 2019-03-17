@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/VadimDyachenko/spring5-mvc-rest.svg?style=svg)](https://circleci.com/gh/VadimDyachenko/spring5-mvc-rest)
+[![codecov](https://codecov.io/gh/VadimDyachenko/spring5-mvc-rest/branch/master/graph/badge.svg)]
 # Spring Framework 5 MVC Rest Application
 
 This repository is for an example application built in Spring Framework 5 Online course - Beginner to Guru
