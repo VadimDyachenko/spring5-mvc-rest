@@ -22,11 +22,13 @@ public class BootstrapTest {
 
     @Test
     public void shouldLoadDataOnStartup() {
-
+        //given
         Category fruits = Category.builder().name("Fruits").build();
 
+        //when
         List<Category> categories = repository.findAll();
 
+        //then
         assertEquals(5, categories.size());
         assertTrue(categories.contains(fruits));
     }
