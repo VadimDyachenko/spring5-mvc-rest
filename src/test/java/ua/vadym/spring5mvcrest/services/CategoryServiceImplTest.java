@@ -39,7 +39,7 @@ public class CategoryServiceImplTest {
         when(repository.findAll()).thenReturn(categories);
 
         //when
-        List<CategoryDTO> actual = service.getAllCategory();
+        List<CategoryDTO> actual = service.getAllCategories();
 
         //then
         assertEquals(3, actual.size());
