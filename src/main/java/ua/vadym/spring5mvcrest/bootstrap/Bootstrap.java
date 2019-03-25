@@ -25,6 +25,22 @@ public class Bootstrap implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        loadCategories();
+        loadCustomers();
+    }
+
+    private void loadCustomers() {
+        Customer ironman = Customer.builder().firstname("Iron").lastname("Man").url("http://ironman.com").build();
+        Customer superman = Customer.builder().firstname("Super").lastname("Man").url("http://superman.com").build();
+        Customer bob = Customer.builder().firstname("Just").lastname("Bob").url("http://bob.com").build();
+
+        List<Customer> customers = Arrays.asList(ironman, superman, bob);
+
+        customerRepository.saveAll(customers);
+        log.info("Customer data loaded, {} items", customerRepository.count());
+    }
+
+    private void loadCategories() {
         Category fruits = Category.builder().name("Fruits").build();
         Category dried = Category.builder().name("Dried").build();
         Category fresh = Category.builder().name("Fresh").build();
@@ -35,14 +51,5 @@ public class Bootstrap implements CommandLineRunner {
 
         categoryRepository.saveAll(categories);
         log.info("Category data loaded, {} items", categoryRepository.count());
-
-        Customer ironman = Customer.builder().firstname("Iron").lastname("Man").url("http://ironman.com").build();
-        Customer superman = Customer.builder().firstname("Super").lastname("Man").url("http://superman.com").build();
-        Customer bob = Customer.builder().firstname("Just").lastname("Bob").url("http://bob.com").build();
-
-        List<Customer> customers = Arrays.asList(ironman, superman, bob);
-
-        customerRepository.saveAll(customers);
-        log.info("Customer data loaded, {} items", customerRepository.count());
     }
 }
