@@ -1,0 +1,46 @@
+package ua.vadym.spring5mvcrest.services;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import ua.vadym.spring5mvcrest.api.v1.mapper.CustomerMapper;
+import ua.vadym.spring5mvcrest.api.v1.model.CustomerDTO;
+import ua.vadym.spring5mvcrest.domain.Customer;
+import ua.vadym.spring5mvcrest.repository.CustomerRepository;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.when;
+
+public class CustomerServiceImplTest {
+
+    @Mock
+    CustomerRepository repository;
+
+    private CustomerService service;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        service = new CustomerServiceImpl(repository, CustomerMapper.INSTANCE);
+    }
+
+    @Test
+    public void findAll() {
+        //given
+        List<Customer> customers = Arrays.asList(Customer.builder().build(), Customer.builder().build());
+        when(repository.findAll()).thenReturn(customers);
+
+        //when
+        List<CustomerDTO> actual = service.getAllCustomers();
+
+        //then
+        assertNotNull(actual);
+        assertEquals(2, actual.size());
+    }
+
+}
