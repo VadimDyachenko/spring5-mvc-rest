@@ -63,7 +63,7 @@ public class CustomerServiceImplTest {
         assertEquals(Long.valueOf(5L), actual.getId());
         assertEquals("Iron", actual.getFirstname());
         assertEquals("Man", actual.getLastname());
-        assertEquals("/api/v1/customer/5", actual.getUrl());
+        assertEquals("/api/v1/customers/5", actual.getUrl());
 
     }
 

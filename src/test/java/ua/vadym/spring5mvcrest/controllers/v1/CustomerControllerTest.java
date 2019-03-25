@@ -8,7 +8,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import testtool.JsonFileReader;
 import ua.vadym.spring5mvcrest.api.v1.model.CustomerDTO;
 import ua.vadym.spring5mvcrest.services.CustomerService;
 
@@ -17,8 +16,8 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static testtool.JsonFileMatcher.jsonFromFile;
 
 public class CustomerControllerTest {
 
@@ -31,6 +30,8 @@ public class CustomerControllerTest {
     private MockMvc mockMvc;
 
     private List<CustomerDTO> customers;
+    private CustomerDTO firstCustomerDTO;
+    private CustomerDTO secondCustomerDTO;
 
     @Before
     public void setUp() {
@@ -38,19 +39,19 @@ public class CustomerControllerTest {
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
-        CustomerDTO first = new CustomerDTO();
-        first.setId(1L);
-        first.setFirstname("Iron");
-        first.setLastname("Man");
-        first.setUrl("/api/v1/customer/1");
+        firstCustomerDTO = new CustomerDTO();
+        firstCustomerDTO.setId(1L);
+        firstCustomerDTO.setFirstname("Iron");
+        firstCustomerDTO.setLastname("Man");
+        firstCustomerDTO.setUrl("/api/v1/customers/1");
 
-        CustomerDTO second = new CustomerDTO();
-        second.setId(2L);
-        second.setFirstname("Super");
-        second.setLastname("Man");
-        second.setUrl("/api/v1/customer/2");
+        secondCustomerDTO = new CustomerDTO();
+        secondCustomerDTO.setId(2L);
+        secondCustomerDTO.setFirstname("Super");
+        secondCustomerDTO.setLastname("Man");
+        secondCustomerDTO.setUrl("/api/v1/customers/2");
 
-        customers = Arrays.asList(first, second);
+        customers = Arrays.asList(firstCustomerDTO, secondCustomerDTO);
     }
 
     @Test
@@ -58,12 +59,22 @@ public class CustomerControllerTest {
         //given
         when(service.getAllCustomers()).thenReturn(customers);
 
-        String expected = new JsonFileReader("json/CategoryControllerTest/getAllCustomers_expected.json").content();
-
         //then-when
         mockMvc.perform(get("/api/v1/customers/")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().json(expected));
+                .andExpect(jsonFromFile("json/CategoryControllerTest/getAllCustomers_expected.json"));
+    }
+
+    @Test
+    public void getCustomerById() throws Exception {
+        //given
+        when(service.getCustomerById(1L)).thenReturn(firstCustomerDTO);
+
+        //then-when
+        mockMvc.perform(get("/api/v1/customers/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonFromFile("json/CategoryControllerTest/getCustomerById_expected.json"));
     }
 }

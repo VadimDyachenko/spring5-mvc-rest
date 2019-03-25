@@ -40,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private CustomerDTO getCustomerDTO(Customer customer) {
         CustomerDTO customerDTO = customerMapper.customerToCustomerDto(customer);
-        customerDTO.setUrl("/api/v1/customer/" + customer.getId());
+        customerDTO.setUrl("/api/v1/customers/" + customer.getId());
         return customerDTO;
     }
 }
