@@ -38,6 +38,15 @@ public class CustomerServiceImpl implements CustomerService {
                 .orElseThrow(() -> new RuntimeException("Customer with id:" + id + " not found."));
     }
 
+    @Override
+    @Transactional
+    public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
+        Customer customer = customerMapper.customerDtoToCustomer(customerDTO);
+        Customer savedCustomer = customerRepository.save(customer);
+
+        return getCustomerDTO(savedCustomer);
+    }
+
     private CustomerDTO getCustomerDTO(Customer customer) {
         CustomerDTO customerDTO = customerMapper.customerToCustomerDto(customer);
         customerDTO.setUrl("/api/v1/customers/" + customer.getId());
