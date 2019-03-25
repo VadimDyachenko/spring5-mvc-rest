@@ -1,0 +1,14 @@
+{
+  "customers": [
+    {
+      "firstname": "Iron",
+      "lastname": "Man",
+      "customer_url": "http://ironman.com"
+    },
+    {
+      "firstname": "Super",
+      "lastname": "Man",
+      "customer_url": "http://superman.com"
+    }
+  ]
+}
