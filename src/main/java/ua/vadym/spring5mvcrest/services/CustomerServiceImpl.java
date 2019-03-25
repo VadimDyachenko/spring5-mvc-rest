@@ -21,6 +21,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CustomerDTO> getAllCustomers() {
         return customerRepository.findAll()
                 .stream()

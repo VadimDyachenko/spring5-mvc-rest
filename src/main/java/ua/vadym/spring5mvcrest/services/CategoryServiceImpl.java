@@ -1,6 +1,7 @@
 package ua.vadym.spring5mvcrest.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.vadym.spring5mvcrest.api.v1.mapper.CategoryMapper;
 import ua.vadym.spring5mvcrest.api.v1.model.CategoryDTO;
 import ua.vadym.spring5mvcrest.repository.CategoryRepository;
@@ -20,6 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDTO> getAllCategories() {
         return repository.findAll()
                 .stream()
@@ -28,6 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryDTO getCategoryByName(String name) {
         return categoryMapper.CategoryToCategoryDto(repository.findByName(name));
     }
