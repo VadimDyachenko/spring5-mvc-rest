@@ -14,17 +14,17 @@ import ua.vadym.spring5mvcrest.services.CategoryService;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static testtool.JsonFileMatcher.jsonFromFile;
 
 public class CategoryControllerTest {
 
-    private static final String NAME = "Fruits";
+    private static final String FRUITS = "Fruits";
+    private static final String NUTS = "Nuts";
+    private static final String URL_CATEGORIES = "/api/v1/categories/";
 
     @Mock
     CategoryService service;
@@ -34,49 +34,48 @@ public class CategoryControllerTest {
 
     private MockMvc mockMvc;
 
+    private CategoryDTO firstCategoryDTO;
+    private CategoryDTO secondCategoryDTO;
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+
+        firstCategoryDTO = new CategoryDTO();
+        firstCategoryDTO.setId(1L);
+        firstCategoryDTO.setName(FRUITS);
+
+        secondCategoryDTO = new CategoryDTO();
+        secondCategoryDTO.setId(2L);
+        secondCategoryDTO.setName(NUTS);
     }
 
     @Test
     public void getListCategories() throws Exception {
         //given
-        CategoryDTO first = new CategoryDTO();
-        first.setId(1L);
-        first.setName(NAME);
-
-        CategoryDTO second = new CategoryDTO();
-        second.setId(2L);
-        second.setName("Nuts");
-
-        List<CategoryDTO> categoryDTOList = Arrays.asList(first, second);
+        List<CategoryDTO> categoryDTOList = Arrays.asList(firstCategoryDTO, secondCategoryDTO);
         when(service.getAllCategories()).thenReturn(categoryDTOList);
 
         //then-when
-        mockMvc.perform(get("/api/v1/categories/")
+        mockMvc.perform(get(URL_CATEGORIES)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.categories", hasSize(2)));
+                .andExpect(jsonFromFile("json/CategoryControllerTest/getListCategories_expected.json"));
 
     }
 
     @Test
-    public void findByName_shouldReturnCategory() throws Exception {
+    public void findByName() throws Exception {
         //given
-        CategoryDTO first = new CategoryDTO();
-        first.setId(1L);
-        first.setName(NAME);
-
-        when(service.getCategoryByName(anyString())).thenReturn(first);
+        when(service.getCategoryByName(anyString())).thenReturn(firstCategoryDTO);
 
         //then-when
-        mockMvc.perform(get("/api/v1/categories/fruits")
+        mockMvc.perform(get(URL_CATEGORIES + FRUITS)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", equalTo(NAME)));
+                .andExpect(jsonFromFile("json/CategoryControllerTest/findByName_expected.json"));
 
     }
 }
