@@ -69,7 +69,7 @@ public class CustomerControllerTest {
         mockMvc.perform(get(URL_CUSTOMERS)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonFromFile("json/CategoryControllerTest/getAllCustomers_expected.json"));
+                .andExpect(jsonFromFile("json/CustomerControllerTest/getAllCustomers_expected.json"));
     }
 
     @Test
@@ -81,13 +81,13 @@ public class CustomerControllerTest {
         mockMvc.perform(get(URL_CUSTOMERS + ID_1)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonFromFile("json/CategoryControllerTest/getCustomerById_expected.json"));
+                .andExpect(jsonFromFile("json/CustomerControllerTest/getCustomerById_expected.json"));
     }
 
     @Test
     public void createNewCustomer() throws Exception {
         //given
-        String request = new JsonFileReader("json/CategoryControllerTest/createNewCustomer_request.json").content();
+        String request = new JsonFileReader("json/CustomerControllerTest/createNewCustomer_request.json").content();
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstname(FIRST_NAME);
         customerDTO.setLastname(LAST_NAME);
@@ -104,6 +104,6 @@ public class CustomerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(status().isCreated())
-                .andExpect(jsonFromFile("json/CategoryControllerTest/createNewCustomer_expected.json"));
+                .andExpect(jsonFromFile("json/CustomerControllerTest/createNewCustomer_expected.json"));
     }
 }
