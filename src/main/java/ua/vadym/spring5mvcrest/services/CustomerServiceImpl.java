@@ -28,4 +28,12 @@ public class CustomerServiceImpl implements CustomerService {
                 .map(customerMapper::CustomerToCustomerDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CustomerDTO getCustomerById(long id) {
+        return customerRepository.findById(id)
+                .map(customerMapper::CustomerToCustomerDto)
+                .orElseThrow(() -> new RuntimeException("Customer with id:" + id + " not found."));
+    }
 }
