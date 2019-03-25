@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JsonFileReader {
-    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
     private final String path;
 
     public JsonFileReader(final String path) {
@@ -23,7 +22,7 @@ public class JsonFileReader {
         String content = lines
                 .filter(line -> !line.isEmpty() && !line.startsWith("//"))
                 .map(String::trim)
-                .collect(Collectors.joining(LINE_SEPARATOR));
+                .collect(Collectors.joining(""));
         lines.close();
 
         return content;
