@@ -40,13 +40,11 @@ public class CustomerControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         firstCustomerDTO = new CustomerDTO();
-        firstCustomerDTO.setId(1L);
         firstCustomerDTO.setFirstname("Iron");
         firstCustomerDTO.setLastname("Man");
         firstCustomerDTO.setUrl("/api/v1/customers/1");
 
         secondCustomerDTO = new CustomerDTO();
-        secondCustomerDTO.setId(2L);
         secondCustomerDTO.setFirstname("Super");
         secondCustomerDTO.setLastname("Man");
         secondCustomerDTO.setUrl("/api/v1/customers/2");

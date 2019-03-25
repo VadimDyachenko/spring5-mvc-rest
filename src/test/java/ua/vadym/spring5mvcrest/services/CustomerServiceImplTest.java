@@ -60,7 +60,6 @@ public class CustomerServiceImplTest {
         CustomerDTO actual = service.getCustomerById(5L);
 
         //then
-        assertEquals(Long.valueOf(5L), actual.getId());
         assertEquals("Iron", actual.getFirstname());
         assertEquals("Man", actual.getLastname());
         assertEquals("/api/v1/customers/5", actual.getUrl());

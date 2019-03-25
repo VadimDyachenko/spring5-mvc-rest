@@ -1,13 +1,11 @@
 {
   "customers": [
     {
-      "id": 1,
       "firstname": "Iron",
       "lastname": "Man",
       "customer_url": "/api/v1/customers/1"
     },
     {
-      "id": 2,
       "firstname": "Super",
       "lastname": "Man",
       "customer_url": "/api/v1/customers/2"
