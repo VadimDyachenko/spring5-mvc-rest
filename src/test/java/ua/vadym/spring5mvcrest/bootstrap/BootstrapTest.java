@@ -6,30 +6,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.vadym.spring5mvcrest.domain.Category;
+import ua.vadym.spring5mvcrest.domain.Customer;
 import ua.vadym.spring5mvcrest.repository.CategoryRepository;
+import ua.vadym.spring5mvcrest.repository.CustomerRepository;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class BootstrapTest {
 
     @Autowired
-    private CategoryRepository repository;
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Test
     public void shouldLoadDataOnStartup() {
-        //given
-        Category fruits = Category.builder().name("Fruits").build();
-
         //when
-        List<Category> categories = repository.findAll();
+        List<Category> categories = categoryRepository.findAll();
+        List<Customer> customers =  customerRepository.findAll();
 
         //then
         assertEquals(5, categories.size());
-        assertTrue(categories.contains(fruits));
+        assertEquals(3, customers.size());
     }
 }

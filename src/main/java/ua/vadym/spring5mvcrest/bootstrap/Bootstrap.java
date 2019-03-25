@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import ua.vadym.spring5mvcrest.domain.Category;
+import ua.vadym.spring5mvcrest.domain.Customer;
 import ua.vadym.spring5mvcrest.repository.CategoryRepository;
+import ua.vadym.spring5mvcrest.repository.CustomerRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,9 +16,11 @@ import java.util.List;
 public class Bootstrap implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
+    private final CustomerRepository customerRepository;
 
-    public Bootstrap(CategoryRepository categoryRepository) {
+    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
         this.categoryRepository = categoryRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -30,7 +34,15 @@ public class Bootstrap implements CommandLineRunner {
         List<Category> categories = Arrays.asList(fruits, dried, fresh, exotic, nuts);
 
         categoryRepository.saveAll(categories);
+        log.info("Category data loaded, {} items", categoryRepository.count());
 
-        log.info("Data loaded, {} items", categoryRepository.count());
+        Customer ironman = Customer.builder().firstname("Iron").lastname("Man").url("http://ironman.com").build();
+        Customer superman = Customer.builder().firstname("Super").lastname("Man").url("http://superman.com").build();
+        Customer bob = Customer.builder().firstname("Just").lastname("Bob").url("http://bob.com").build();
+
+        List<Customer> customers = Arrays.asList(ironman, superman, bob);
+
+        customerRepository.saveAll(customers);
+        log.info("Customer data loaded, {} items", customerRepository.count());
     }
 }
