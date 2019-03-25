@@ -25,13 +25,13 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDTO> getAllCategories() {
         return repository.findAll()
                 .stream()
-                .map(categoryMapper::CategoryToCategoryDto)
+                .map(categoryMapper::categoryToCategoryDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
     public CategoryDTO getCategoryByName(String name) {
-        return categoryMapper.CategoryToCategoryDto(repository.findByName(name));
+        return categoryMapper.categoryToCategoryDto(repository.findByName(name));
     }
 }

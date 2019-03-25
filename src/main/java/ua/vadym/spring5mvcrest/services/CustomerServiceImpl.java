@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.vadym.spring5mvcrest.api.v1.mapper.CustomerMapper;
 import ua.vadym.spring5mvcrest.api.v1.model.CustomerDTO;
+import ua.vadym.spring5mvcrest.domain.Customer;
 import ua.vadym.spring5mvcrest.repository.CustomerRepository;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerDTO> getAllCustomers() {
         return customerRepository.findAll()
                 .stream()
-                .map(customerMapper::CustomerToCustomerDto)
+                .map(this::getCustomerDTO)
                 .collect(Collectors.toList());
     }
 
@@ -33,7 +34,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional(readOnly = true)
     public CustomerDTO getCustomerById(long id) {
         return customerRepository.findById(id)
-                .map(customerMapper::CustomerToCustomerDto)
+                .map(this::getCustomerDTO)
                 .orElseThrow(() -> new RuntimeException("Customer with id:" + id + " not found."));
+    }
+
+    private CustomerDTO getCustomerDTO(Customer customer) {
+        CustomerDTO customerDTO = customerMapper.customerToCustomerDto(customer);
+        customerDTO.setUrl("/api/v1/customer/" + customer.getId());
+        return customerDTO;
     }
 }

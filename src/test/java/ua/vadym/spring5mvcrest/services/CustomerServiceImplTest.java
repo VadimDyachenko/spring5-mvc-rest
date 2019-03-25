@@ -53,7 +53,7 @@ public class CustomerServiceImplTest {
     @Test
     public void findById() {
         //given
-        Customer customer = Customer.builder().id(5L).firstname("Iron").lastname("Man").url("url").build();
+        Customer customer = Customer.builder().id(5L).firstname("Iron").lastname("Man").build();
         when(repository.findById(5L)).thenReturn(Optional.of(customer));
 
         //when
@@ -63,7 +63,8 @@ public class CustomerServiceImplTest {
         assertEquals(Long.valueOf(5L), actual.getId());
         assertEquals("Iron", actual.getFirstname());
         assertEquals("Man", actual.getLastname());
-        assertEquals("url", actual.getUrl());
+        assertEquals("/api/v1/customer/5", actual.getUrl());
+
     }
 
     @Test
@@ -72,10 +73,10 @@ public class CustomerServiceImplTest {
         long id = 5L;
         when(repository.findById(anyLong())).thenReturn(Optional.empty());
 
+        //then-when
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("Customer with id:" + id + " not found.");
 
-        //when-then
         service.getCustomerById(id);
     }
 }

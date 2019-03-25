@@ -4,13 +4,13 @@
       "id": 1,
       "firstname": "Iron",
       "lastname": "Man",
-      "customer_url": "http://ironman.com"
+      "customer_url": "/api/v1/customer/1"
     },
     {
       "id": 2,
       "firstname": "Super",
       "lastname": "Man",
-      "customer_url": "http://superman.com"
+      "customer_url": "/api/v1/customer/2"
     }
   ]
 }

@@ -42,13 +42,14 @@ public class CustomerControllerTest {
         first.setId(1L);
         first.setFirstname("Iron");
         first.setLastname("Man");
-        first.setUrl("http://ironman.com");
+        first.setUrl("/api/v1/customer/1");
 
         CustomerDTO second = new CustomerDTO();
         second.setId(2L);
         second.setFirstname("Super");
         second.setLastname("Man");
-        second.setUrl("http://superman.com");
+        second.setUrl("/api/v1/customer/2");
+
         customers = Arrays.asList(first, second);
     }
 

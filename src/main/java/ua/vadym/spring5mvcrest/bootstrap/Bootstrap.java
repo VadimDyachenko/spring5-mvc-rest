@@ -30,9 +30,9 @@ public class Bootstrap implements CommandLineRunner {
     }
 
     private void loadCustomers() {
-        Customer ironman = Customer.builder().firstname("Iron").lastname("Man").url("http://ironman.com").build();
-        Customer superman = Customer.builder().firstname("Super").lastname("Man").url("http://superman.com").build();
-        Customer bob = Customer.builder().firstname("Just").lastname("Bob").url("http://bob.com").build();
+        Customer ironman = Customer.builder().firstname("Iron").lastname("Man").build();
+        Customer superman = Customer.builder().firstname("Super").lastname("Man").build();
+        Customer bob = Customer.builder().firstname("Just").lastname("Bob").build();
 
         List<Customer> customers = Arrays.asList(ironman, superman, bob);
 
