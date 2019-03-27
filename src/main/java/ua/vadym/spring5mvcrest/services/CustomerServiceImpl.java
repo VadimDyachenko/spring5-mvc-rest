@@ -53,7 +53,29 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerMapper.customerDtoToCustomer(customerDTO);
         customer.setId(id);
         Customer savedCustomer = customerRepository.save(customer);
-        return  getCustomerDTO(savedCustomer);
+        return getCustomerDTO(savedCustomer);
+    }
+
+    @Override
+    @Transactional
+    public CustomerDTO patchCustomer(Long id, CustomerDTO customerDTO) {
+        Customer patchedCustomer = customerRepository.findById(id)
+                .map(customer -> mapCustomerFields(customer, customerDTO))
+                .orElseThrow(() -> new RuntimeException("Customer with id:" + id + " not found."));
+
+        return getCustomerDTO(customerRepository.save(patchedCustomer));
+    }
+
+    private Customer mapCustomerFields(Customer customer, CustomerDTO customerDTO) {
+        String firstname = customerDTO.getFirstname();
+        String lastname = customerDTO.getLastname();
+        if (firstname != null) {
+            customer.setFirstname(firstname);
+        }
+        if (lastname != null) {
+            customer.setLastname(lastname);
+        }
+        return customer;
     }
 
     private CustomerDTO getCustomerDTO(Customer customer) {
