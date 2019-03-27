@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import testtool.JsonFileReader;
 
 import static com.github.springtestdbunit.assertion.DatabaseAssertionMode.NON_STRICT_UNORDERED;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -85,5 +86,17 @@ public class CustomerControllerTest extends AbstractControllerTest {
                 .content(request))
                 .andExpect(status().isOk())
                 .andExpect(jsonFromFile("json/CustomerControllerTest/patchCustomer_expected.json"));
+    }
+
+    @Test
+    @DatabaseSetup("/dbunit/CustomerControllerTest/deleteCustomer_initial.xml")
+    @ExpectedDatabase(
+            value = "/dbunit/CustomerControllerTest/deleteCustomer_expected.xml",
+            assertionMode = NON_STRICT_UNORDERED
+    )
+    public void deleteCustomer() throws Exception {
+        mockMvc.perform(delete(URL_CUSTOMERS + ID_1)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

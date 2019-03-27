@@ -66,6 +66,12 @@ public class CustomerServiceImpl implements CustomerService {
         return getCustomerDTO(customerRepository.save(patchedCustomer));
     }
 
+    @Override
+    @Transactional
+    public void deleteCustomerById(long id) {
+        customerRepository.deleteById(id);
+    }
+
     private Customer mapCustomerFields(Customer customer, CustomerDTO customerDTO) {
         String firstname = customerDTO.getFirstname();
         String lastname = customerDTO.getLastname();

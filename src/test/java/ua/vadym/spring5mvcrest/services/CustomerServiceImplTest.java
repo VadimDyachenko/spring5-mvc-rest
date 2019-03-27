@@ -221,4 +221,16 @@ public class CustomerServiceImplTest {
         verify(repository, times(1)).findById(id);
         verify(repository, never()).save(any(Customer.class));
     }
+
+    @Test
+    public void deleteCustomerById() {
+        //given
+        long id = 1L;
+
+        //when
+        service.deleteCustomerById(id);
+
+        //then
+        verify(repository, times(1)).deleteById(id);
+    }
 }

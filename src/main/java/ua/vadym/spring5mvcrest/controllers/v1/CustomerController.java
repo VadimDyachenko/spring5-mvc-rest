@@ -3,6 +3,7 @@ package ua.vadym.spring5mvcrest.controllers.v1;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,5 +49,11 @@ public class CustomerController {
     @PatchMapping({"{id}"})
     public ResponseEntity<CustomerDTO> patchCustomer(@PathVariable Long id, @RequestBody CustomerDTO customer) {
         return new ResponseEntity<>(service.patchCustomer(id, customer), HttpStatus.OK);
+    }
+
+    @DeleteMapping({"{id}"})
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
+        service.deleteCustomerById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
