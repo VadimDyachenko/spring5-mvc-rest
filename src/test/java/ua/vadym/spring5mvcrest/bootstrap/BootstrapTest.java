@@ -5,12 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ua.vadym.spring5mvcrest.domain.Category;
-import ua.vadym.spring5mvcrest.domain.Customer;
 import ua.vadym.spring5mvcrest.repository.CategoryRepository;
 import ua.vadym.spring5mvcrest.repository.CustomerRepository;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,15 +18,20 @@ public class BootstrapTest {
     private CategoryRepository categoryRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private Bootstrap bootstrap;
 
     @Test
     public void shouldLoadDataOnStartup() {
+        //given
+        categoryRepository.deleteAll();
+        customerRepository.deleteAll();
+
         //when
-        List<Category> categories = categoryRepository.findAll();
-        List<Customer> customers =  customerRepository.findAll();
+        bootstrap.run();
 
         //then
-        assertEquals(5, categories.size());
-        assertEquals(3, customers.size());
+        assertEquals(5, categoryRepository.findAll().size());
+        assertEquals(3, customerRepository.findAll().size());
     }
 }
