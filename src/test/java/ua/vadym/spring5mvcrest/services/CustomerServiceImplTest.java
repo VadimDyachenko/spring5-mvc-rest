@@ -97,7 +97,7 @@ public class CustomerServiceImplTest {
         customerDTO.setFirstname(FIRST_NAME);
         customerDTO.setLastname(LAST_NAME);
 
-        Customer customer = Customer.builder().firstname(FIRST_NAME).lastname(LAST_NAME).build();
+        Customer toSaveCustomer = Customer.builder().firstname(FIRST_NAME).lastname(LAST_NAME).build();
         Customer savedCustomer = Customer.builder().id(3L).firstname(FIRST_NAME).lastname(LAST_NAME).build();
         when(repository.save(any(Customer.class))).thenReturn(savedCustomer);
 
@@ -111,6 +111,34 @@ public class CustomerServiceImplTest {
 
         //then
         assertThat(actual, is(expected));
+        verify(repository, times(1)).save(toSaveCustomer);
+    }
+
+    @Test
+    public void saveCustomerByDTO() {
+        //given
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstname(FIRST_NAME);
+        customerDTO.setLastname(LAST_NAME);
+
+        Customer customer = Customer.builder()
+                .id(3L)
+                .firstname(customerDTO.getFirstname())
+                .lastname(customerDTO.getLastname())
+                .build();
+        when(repository.save(any(Customer.class))).thenReturn(customer);
+
+        CustomerDTO expected = new CustomerDTO();
+        expected.setFirstname(FIRST_NAME);
+        expected.setLastname(LAST_NAME);
+        expected.setUrl("/api/v1/customers/3");
+
+        //when
+        CustomerDTO actual = service.saveCustomerByDTO(3L, customerDTO);
+
+        //then
+        assertThat(actual, is(expected));
+
         verify(repository, times(1)).save(customer);
     }
 }
