@@ -1,5 +1,5 @@
 {
   "firstname": "UpdatedName",
-  "lastname": "Man",
+  "lastname": "Updated LastName",
   "customer_url": "/api/v1/customers/2"
 }

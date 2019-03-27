@@ -8,6 +8,7 @@ import testtool.JsonFileReader;
 
 import static com.github.springtestdbunit.assertion.DatabaseAssertionMode.NON_STRICT_UNORDERED;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -63,10 +64,26 @@ public class CustomerControllerTest extends AbstractControllerTest {
     public void updateCustomer() throws Exception {
         String request = new JsonFileReader("json/CustomerControllerTest/updateCustomer_request.json").content();
 
-        mockMvc.perform(put(URL_CUSTOMERS+ ID_2)
+        mockMvc.perform(put(URL_CUSTOMERS + ID_2)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(status().isOk())
                 .andExpect(jsonFromFile("json/CustomerControllerTest/updateCustomer_expected.json"));
+    }
+
+    @Test
+    @DatabaseSetup("/dbunit/CustomerControllerTest/patchCustomer_initial.xml")
+    @ExpectedDatabase(
+            value = "/dbunit/CustomerControllerTest/patchCustomer_expected.xml",
+            assertionMode = NON_STRICT_UNORDERED
+    )
+    public void patchCustomer() throws Exception {
+        String request = new JsonFileReader("json/CustomerControllerTest/patchCustomer_request.json").content();
+
+        mockMvc.perform(patch(URL_CUSTOMERS + ID_1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(request))
+                .andExpect(status().isOk())
+                .andExpect(jsonFromFile("json/CustomerControllerTest/patchCustomer_expected.json"));
     }
 }
