@@ -30,6 +30,7 @@ public class CustomerServiceImplTest {
     private static final String FIRST_NAME = "Iron";
     private static final String NEW_NAME = "New Name";
     private static final String LAST_NAME = "Man";
+    private static final long ID = 1L;
 
     @Mock
     CustomerRepository repository;
@@ -43,7 +44,7 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    public void findAll() {
+    public void getAllCustomers() {
         //given
         List<Customer> customers = Arrays.asList(Customer.builder().build(), Customer.builder().build());
         when(repository.findAll()).thenReturn(customers);
@@ -58,30 +59,28 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    public void findById() {
+    public void getCustomerById() {
         //given
-        long id = 5L;
-        Customer customer = Customer.builder().id(id).firstname(FIRST_NAME).lastname(LAST_NAME).build();
-        when(repository.findById(id)).thenReturn(Optional.of(customer));
+        Customer customer = Customer.builder().id(ID).firstname(FIRST_NAME).lastname(LAST_NAME).build();
+        when(repository.findById(ID)).thenReturn(Optional.of(customer));
 
         //when
-        CustomerDTO actual = service.getCustomerById(id);
+        CustomerDTO actual = service.getCustomerById(ID);
 
         //then
         assertEquals(FIRST_NAME, actual.getFirstname());
         assertEquals(LAST_NAME, actual.getLastname());
-        assertEquals("/api/v1/customers/5", actual.getUrl());
-        verify(repository, times(1)).findById(id);
+        assertEquals("/api/v1/customers/1", actual.getUrl());
+        verify(repository, times(1)).findById(ID);
     }
 
     @Test(expected = ApplicationException.class)
     public void findById_shouldThrowExceptionIfNotFound() {
         //given
-        long id = 5L;
         when(repository.findById(anyLong())).thenReturn(Optional.empty());
 
         //then-when
-        service.getCustomerById(id);
+        service.getCustomerById(5L);
     }
 
     @Test
@@ -92,13 +91,13 @@ public class CustomerServiceImplTest {
         customerDTO.setLastname(LAST_NAME);
 
         Customer toSaveCustomer = Customer.builder().firstname(FIRST_NAME).lastname(LAST_NAME).build();
-        Customer savedCustomer = Customer.builder().id(3L).firstname(FIRST_NAME).lastname(LAST_NAME).build();
+        Customer savedCustomer = Customer.builder().id(ID).firstname(FIRST_NAME).lastname(LAST_NAME).build();
         when(repository.save(any(Customer.class))).thenReturn(savedCustomer);
 
         CustomerDTO expected = new CustomerDTO();
         expected.setFirstname(FIRST_NAME);
         expected.setLastname(LAST_NAME);
-        expected.setUrl("/api/v1/customers/3");
+        expected.setUrl("/api/v1/customers/1");
 
         //when
         CustomerDTO actual = service.createNewCustomer(customerDTO);
@@ -140,12 +139,11 @@ public class CustomerServiceImplTest {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setFirstname(NEW_NAME);
 
-        long id = 1L;
-        Customer initialCustomer = Customer.builder().id(id).firstname(FIRST_NAME).lastname(LAST_NAME).build();
-        Customer patchedCustomer = Customer.builder().id(id).firstname(NEW_NAME).lastname(LAST_NAME).build();
-        when(repository.findById(id)).thenReturn(Optional.of(initialCustomer));
+        Customer initialCustomer = Customer.builder().id(ID).firstname(FIRST_NAME).lastname(LAST_NAME).build();
+        Customer patchedCustomer = Customer.builder().id(ID).firstname(NEW_NAME).lastname(LAST_NAME).build();
+        when(repository.findById(ID)).thenReturn(Optional.of(initialCustomer));
 
-        Customer savedCustomer = Customer.builder().id(id).firstname(NEW_NAME).lastname(LAST_NAME).build();
+        Customer savedCustomer = Customer.builder().id(ID).firstname(NEW_NAME).lastname(LAST_NAME).build();
         when(repository.save(any(Customer.class))).thenReturn(savedCustomer);
         ArgumentCaptor<Customer> argumentCaptor = ArgumentCaptor.forClass(Customer.class);
 
@@ -155,11 +153,11 @@ public class CustomerServiceImplTest {
         expected.setUrl("/api/v1/customers/1");
 
         //when
-        CustomerDTO actual = service.patchCustomer(id, customerDTO);
+        CustomerDTO actual = service.patchCustomer(ID, customerDTO);
 
         //then
         assertThat(actual, is(expected));
-        verify(repository, times(1)).findById(id);
+        verify(repository, times(1)).findById(ID);
         verify(repository, times(1)).save(argumentCaptor.capture());
         assertThat(patchedCustomer, is(argumentCaptor.getValue()));
     }
@@ -170,12 +168,11 @@ public class CustomerServiceImplTest {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setLastname(NEW_NAME);
 
-        long id = 1L;
-        Customer initialCustomer = Customer.builder().id(id).firstname(FIRST_NAME).lastname(LAST_NAME).build();
-        Customer patchedCustomer = Customer.builder().id(id).firstname(FIRST_NAME).lastname(NEW_NAME).build();
-        when(repository.findById(id)).thenReturn(Optional.of(initialCustomer));
+        Customer initialCustomer = Customer.builder().id(ID).firstname(FIRST_NAME).lastname(LAST_NAME).build();
+        Customer patchedCustomer = Customer.builder().id(ID).firstname(FIRST_NAME).lastname(NEW_NAME).build();
+        when(repository.findById(ID)).thenReturn(Optional.of(initialCustomer));
 
-        Customer savedCustomer = Customer.builder().id(id).firstname(FIRST_NAME).lastname(NEW_NAME).build();
+        Customer savedCustomer = Customer.builder().id(ID).firstname(FIRST_NAME).lastname(NEW_NAME).build();
         when(repository.save(any(Customer.class))).thenReturn(savedCustomer);
         ArgumentCaptor<Customer> argumentCaptor = ArgumentCaptor.forClass(Customer.class);
 
@@ -185,11 +182,11 @@ public class CustomerServiceImplTest {
         expected.setUrl("/api/v1/customers/1");
 
         //when
-        CustomerDTO actual = service.patchCustomer(id, customerDTO);
+        CustomerDTO actual = service.patchCustomer(ID, customerDTO);
 
         //then
         assertThat(actual, is(expected));
-        verify(repository, times(1)).findById(id);
+        verify(repository, times(1)).findById(ID);
         verify(repository, times(1)).save(argumentCaptor.capture());
         assertThat(patchedCustomer, is(argumentCaptor.getValue()));
     }
@@ -199,23 +196,18 @@ public class CustomerServiceImplTest {
         //given
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setLastname(NEW_NAME);
-
-        long id = 1L;
-        when(repository.findById(id)).thenReturn(Optional.empty());
+        when(repository.findById(ID)).thenReturn(Optional.empty());
 
         //then-when
-        service.patchCustomer(id, customerDTO);
+        service.patchCustomer(ID, customerDTO);
     }
 
     @Test
     public void deleteCustomerById() {
-        //given
-        long id = 1L;
-
         //when
-        service.deleteCustomerById(id);
+        service.deleteCustomerById(ID);
 
         //then
-        verify(repository, times(1)).deleteById(id);
+        verify(repository, times(1)).deleteById(ID);
     }
 }
