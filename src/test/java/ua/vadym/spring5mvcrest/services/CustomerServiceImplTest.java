@@ -1,15 +1,14 @@
 package ua.vadym.spring5mvcrest.services;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import ua.vadym.spring5mvcrest.api.v1.mapper.CustomerMapper;
 import ua.vadym.spring5mvcrest.api.v1.model.CustomerDTO;
 import ua.vadym.spring5mvcrest.domain.Customer;
+import ua.vadym.spring5mvcrest.exceptions.ApplicationException;
 import ua.vadym.spring5mvcrest.repository.CustomerRepository;
 
 import java.util.Arrays;
@@ -22,7 +21,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,9 +30,6 @@ public class CustomerServiceImplTest {
     private static final String FIRST_NAME = "Iron";
     private static final String NEW_NAME = "New Name";
     private static final String LAST_NAME = "Man";
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     CustomerRepository repository;
@@ -79,18 +74,14 @@ public class CustomerServiceImplTest {
         verify(repository, times(1)).findById(id);
     }
 
-    @Test
+    @Test(expected = ApplicationException.class)
     public void findById_shouldThrowExceptionIfNotFound() {
         //given
         long id = 5L;
         when(repository.findById(anyLong())).thenReturn(Optional.empty());
 
         //then-when
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Customer with id:" + id + " not found.");
-
         service.getCustomerById(id);
-        verify(repository, times(1)).findById(id);
     }
 
     @Test
@@ -203,7 +194,7 @@ public class CustomerServiceImplTest {
         assertThat(patchedCustomer, is(argumentCaptor.getValue()));
     }
 
-    @Test
+    @Test(expected = ApplicationException.class)
     public void patchCustomer_shouldThrowExceptionIfNotFound() {
         //given
         CustomerDTO customerDTO = new CustomerDTO();
@@ -213,13 +204,7 @@ public class CustomerServiceImplTest {
         when(repository.findById(id)).thenReturn(Optional.empty());
 
         //then-when
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Customer with id:" + id + " not found.");
-
         service.patchCustomer(id, customerDTO);
-
-        verify(repository, times(1)).findById(id);
-        verify(repository, never()).save(any(Customer.class));
     }
 
     @Test

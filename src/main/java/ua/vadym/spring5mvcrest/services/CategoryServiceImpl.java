@@ -4,6 +4,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.vadym.spring5mvcrest.api.v1.mapper.CategoryMapper;
 import ua.vadym.spring5mvcrest.api.v1.model.CategoryDTO;
+import ua.vadym.spring5mvcrest.domain.Category;
+import ua.vadym.spring5mvcrest.exceptions.ApplicationException;
+import ua.vadym.spring5mvcrest.exceptions.ResourceNotFoundError;
 import ua.vadym.spring5mvcrest.repository.CategoryRepository;
 
 import java.util.List;
@@ -32,6 +35,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public CategoryDTO getCategoryByName(String name) {
-        return categoryMapper.categoryToCategoryDto(repository.findByName(name));
+        Category category = repository.findByName(name)
+                .orElseThrow(() -> new ApplicationException(
+                        new ResourceNotFoundError("Category '" + name + "' not found."))
+                );
+        return categoryMapper.categoryToCategoryDto(category);
     }
 }

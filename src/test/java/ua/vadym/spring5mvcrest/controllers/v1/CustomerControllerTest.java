@@ -18,14 +18,15 @@ import static testtool.JsonFileMatcher.jsonFromFile;
 @DatabaseSetup("/dbunit/empty.xml")
 public class CustomerControllerTest extends AbstractControllerTest {
 
-    private static final String URL_CUSTOMERS = "/api/v1/customers/";
+    private static final String BASE_URL = "/api/v1/customers/";
     private static final long ID_1 = 1L;
     private static final long ID_2 = 2L;
+    private static final long ID_5 = 5L;
 
     @Test
     @DatabaseSetup("/dbunit/CustomerControllerTest/getAllCustomers.xml")
     public void getAllCustomers() throws Exception {
-        this.mockMvc.perform(get(URL_CUSTOMERS)
+        this.mockMvc.perform(get(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonFromFile("json/CustomerControllerTest/getAllCustomers_expected.json"));
@@ -34,10 +35,19 @@ public class CustomerControllerTest extends AbstractControllerTest {
     @Test
     @DatabaseSetup("/dbunit/CustomerControllerTest/getCustomerById.xml")
     public void getCustomerById() throws Exception {
-        mockMvc.perform(get(URL_CUSTOMERS + ID_1)
+        mockMvc.perform(get(BASE_URL + ID_1)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonFromFile("json/CustomerControllerTest/getCustomerById_expected.json"));
+    }
+
+    @Test
+    @DatabaseSetup("/dbunit/CustomerControllerTest/getCustomerById.xml")
+    public void getCustomerById_shouldReturnNotFound() throws Exception {
+        mockMvc.perform(get(BASE_URL + ID_5)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonFromFile("json/CustomerControllerTest/getCustomerById_notFoundError.json"));
     }
 
     @Test
@@ -49,7 +59,7 @@ public class CustomerControllerTest extends AbstractControllerTest {
     public void createNewCustomer() throws Exception {
         String request = new JsonFileReader("json/CustomerControllerTest/createNewCustomer_request.json").content();
 
-        mockMvc.perform(post(URL_CUSTOMERS)
+        mockMvc.perform(post(BASE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(status().isCreated())
@@ -65,7 +75,7 @@ public class CustomerControllerTest extends AbstractControllerTest {
     public void updateCustomer() throws Exception {
         String request = new JsonFileReader("json/CustomerControllerTest/updateCustomer_request.json").content();
 
-        mockMvc.perform(put(URL_CUSTOMERS + ID_2)
+        mockMvc.perform(put(BASE_URL + ID_2)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(status().isOk())
@@ -81,11 +91,20 @@ public class CustomerControllerTest extends AbstractControllerTest {
     public void patchCustomer() throws Exception {
         String request = new JsonFileReader("json/CustomerControllerTest/patchCustomer_request.json").content();
 
-        mockMvc.perform(patch(URL_CUSTOMERS + ID_1)
+        mockMvc.perform(patch(BASE_URL + ID_1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(request))
                 .andExpect(status().isOk())
                 .andExpect(jsonFromFile("json/CustomerControllerTest/patchCustomer_expected.json"));
+    }
+
+    @Test
+    @DatabaseSetup("/dbunit/CustomerControllerTest/patchCustomer_initial.xml")
+    public void patchCustomer_shouldReturnNotFound() throws Exception {
+        mockMvc.perform(get(BASE_URL + ID_5)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonFromFile("json/CustomerControllerTest/patchCustomer_notFoundError.json"));
     }
 
     @Test
@@ -95,7 +114,7 @@ public class CustomerControllerTest extends AbstractControllerTest {
             assertionMode = NON_STRICT_UNORDERED
     )
     public void deleteCustomer() throws Exception {
-        mockMvc.perform(delete(URL_CUSTOMERS + ID_1)
+        mockMvc.perform(delete(BASE_URL + ID_1)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

@@ -5,6 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.vadym.spring5mvcrest.api.v1.mapper.CustomerMapper;
 import ua.vadym.spring5mvcrest.api.v1.model.CustomerDTO;
 import ua.vadym.spring5mvcrest.domain.Customer;
+import ua.vadym.spring5mvcrest.exceptions.ApplicationException;
+import ua.vadym.spring5mvcrest.exceptions.ResourceNotFoundError;
 import ua.vadym.spring5mvcrest.repository.CustomerRepository;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO getCustomerById(long id) {
         return customerRepository.findById(id)
                 .map(this::getCustomerDTO)
-                .orElseThrow(() -> new RuntimeException("Customer with id:" + id + " not found."));
+                .orElseThrow(() -> new ApplicationException(new ResourceNotFoundError("Customer with id:" + id + " not found.")));
     }
 
     @Override
@@ -61,7 +63,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDTO patchCustomer(Long id, CustomerDTO customerDTO) {
         Customer patchedCustomer = customerRepository.findById(id)
                 .map(customer -> mapCustomerFields(customer, customerDTO))
-                .orElseThrow(() -> new RuntimeException("Customer with id:" + id + " not found."));
+                .orElseThrow(() -> new ApplicationException(new ResourceNotFoundError("Customer with id:" + id + " not found.")));
 
         return getCustomerDTO(customerRepository.save(patchedCustomer));
     }

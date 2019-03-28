@@ -7,13 +7,16 @@ import org.mockito.MockitoAnnotations;
 import ua.vadym.spring5mvcrest.api.v1.mapper.CategoryMapper;
 import ua.vadym.spring5mvcrest.api.v1.model.CategoryDTO;
 import ua.vadym.spring5mvcrest.domain.Category;
+import ua.vadym.spring5mvcrest.exceptions.ApplicationException;
 import ua.vadym.spring5mvcrest.repository.CategoryRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class CategoryServiceImplTest {
@@ -49,7 +52,7 @@ public class CategoryServiceImplTest {
     public void findByName_shouldReturnCategory() {
         //given
         Category category = Category.builder().name(NAME).id(ID).build();
-        when(repository.findByName(NAME)).thenReturn(category);
+        when(repository.findByName(NAME)).thenReturn(Optional.of(category));
 
         //when
         CategoryDTO actual = service.getCategoryByName(NAME);
@@ -58,5 +61,14 @@ public class CategoryServiceImplTest {
         assertNotNull(actual);
         assertEquals(Long.valueOf(ID), actual.getId());
         assertEquals(NAME, actual.getName());
+    }
+
+    @Test(expected = ApplicationException.class)
+    public void findByName_shouldThrowException() {
+        //given
+        when(repository.findByName(anyString())).thenReturn(Optional.empty());
+
+        //when-then
+        service.getCategoryByName(NAME);
     }
 }
