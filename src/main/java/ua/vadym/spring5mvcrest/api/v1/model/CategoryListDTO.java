@@ -1,12 +1,16 @@
 package ua.vadym.spring5mvcrest.api.v1.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
+import java.util.Collections;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
 public class CategoryListDTO {
-    List<CategoryDTO> categories;
+    private final List<CategoryDTO> categories;
+
+    public CategoryListDTO(List<CategoryDTO> categories) {
+        this.categories = categories == null ? Collections.emptyList() : categories;
+    }
+
+    public List<CategoryDTO> getCategories() {
+        return this.categories;
+    }
 }
