@@ -1,6 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <dataset>
-    <customer />
-    <category />
-    <vendor />
+    <vendor id="2" name="Second vendor"/>
 </dataset>

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <vendor id="1" name="First vendor"/>
+    <vendor id="2" name="Second vendor"/>
+    <vendor id="3" name="Third vendor"/>
+</dataset>

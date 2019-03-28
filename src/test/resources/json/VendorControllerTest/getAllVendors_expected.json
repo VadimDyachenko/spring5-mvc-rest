@@ -1,0 +1,12 @@
+{
+  "vendors": [
+    {
+      "name": "First vendor",
+      "vendor_url": "/api/v1/vendors/1"
+    },
+    {
+      "name": "Second vendor",
+      "vendor_url": "/api/v1/vendors/2"
+    }
+  ]
+}
