@@ -5,8 +5,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import ua.vadym.spring5mvcrest.domain.Category;
 import ua.vadym.spring5mvcrest.domain.Customer;
+import ua.vadym.spring5mvcrest.domain.Vendor;
 import ua.vadym.spring5mvcrest.repository.CategoryRepository;
 import ua.vadym.spring5mvcrest.repository.CustomerRepository;
+import ua.vadym.spring5mvcrest.repository.VendorRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,16 +19,29 @@ public class Bootstrap implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
     private final CustomerRepository customerRepository;
+    private final VendorRepository vendorRepository;
 
-    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
+    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository,
+                     VendorRepository vendorRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
     public void run(String... args) {
         loadCategories();
         loadCustomers();
+        loadVendors();
+    }
+
+    private void loadVendors() {
+        Vendor firstVendor = Vendor.builder().name("Jim & Brothers Co").build();
+        Vendor secondVendor = Vendor.builder().name("Master Co").build();
+        List<Vendor> vendors = Arrays.asList(firstVendor, secondVendor);
+
+        vendorRepository.saveAll(vendors);
+        log.info("Vendor data loaded, {} items", vendorRepository.count());
     }
 
     private void loadCustomers() {

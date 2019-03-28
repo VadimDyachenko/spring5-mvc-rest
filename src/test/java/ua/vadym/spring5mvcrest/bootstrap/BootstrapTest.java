@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.vadym.spring5mvcrest.repository.CategoryRepository;
 import ua.vadym.spring5mvcrest.repository.CustomerRepository;
+import ua.vadym.spring5mvcrest.repository.VendorRepository;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,6 +20,8 @@ public class BootstrapTest {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
+    private VendorRepository vendorRepository;
+    @Autowired
     private Bootstrap bootstrap;
 
     @Test
@@ -26,6 +29,7 @@ public class BootstrapTest {
         //given
         categoryRepository.deleteAll();
         customerRepository.deleteAll();
+        vendorRepository.deleteAll();
 
         //when
         bootstrap.run();
@@ -33,5 +37,6 @@ public class BootstrapTest {
         //then
         assertEquals(5, categoryRepository.findAll().size());
         assertEquals(3, customerRepository.findAll().size());
+        assertEquals(2, vendorRepository.findAll().size());
     }
 }
