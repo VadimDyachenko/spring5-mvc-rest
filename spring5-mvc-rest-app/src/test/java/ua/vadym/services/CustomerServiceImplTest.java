@@ -6,9 +6,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import ua.vadym.api.v1.mapper.CustomerMapper;
-import ua.vadym.api.v1.model.CustomerDTO;
 import ua.vadym.domain.Customer;
 import ua.vadym.exceptions.ApplicationException;
+import ua.vadym.model.CustomerDTO;
 import ua.vadym.repository.CustomerRepository;
 
 import java.util.Arrays;
@@ -70,7 +70,7 @@ public class CustomerServiceImplTest {
         //then
         assertEquals(FIRST_NAME, actual.getFirstname());
         assertEquals(LAST_NAME, actual.getLastname());
-        assertEquals("/api/v1/customers/1", actual.getUrl());
+        assertEquals("/api/v1/customers/1", actual.getCustomerUrl());
         verify(repository, times(1)).findById(ID);
     }
 
@@ -97,7 +97,7 @@ public class CustomerServiceImplTest {
         CustomerDTO expected = new CustomerDTO();
         expected.setFirstname(FIRST_NAME);
         expected.setLastname(LAST_NAME);
-        expected.setUrl("/api/v1/customers/1");
+        expected.setCustomerUrl("/api/v1/customers/1");
 
         //when
         CustomerDTO actual = service.createNewCustomer(customerDTO);
@@ -120,7 +120,7 @@ public class CustomerServiceImplTest {
         CustomerDTO expected = new CustomerDTO();
         expected.setFirstname(FIRST_NAME);
         expected.setLastname(LAST_NAME);
-        expected.setUrl("/api/v1/customers/3");
+        expected.setCustomerUrl("/api/v1/customers/3");
 
         ArgumentCaptor<Customer> argumentCaptor = ArgumentCaptor.forClass(Customer.class);
 
@@ -150,7 +150,7 @@ public class CustomerServiceImplTest {
         CustomerDTO expected = new CustomerDTO();
         expected.setFirstname(NEW_NAME);
         expected.setLastname(LAST_NAME);
-        expected.setUrl("/api/v1/customers/1");
+        expected.setCustomerUrl("/api/v1/customers/1");
 
         //when
         CustomerDTO actual = service.patchCustomer(ID, customerDTO);
@@ -179,7 +179,7 @@ public class CustomerServiceImplTest {
         CustomerDTO expected = new CustomerDTO();
         expected.setFirstname(FIRST_NAME);
         expected.setLastname(NEW_NAME);
-        expected.setUrl("/api/v1/customers/1");
+        expected.setCustomerUrl("/api/v1/customers/1");
 
         //when
         CustomerDTO actual = service.patchCustomer(ID, customerDTO);

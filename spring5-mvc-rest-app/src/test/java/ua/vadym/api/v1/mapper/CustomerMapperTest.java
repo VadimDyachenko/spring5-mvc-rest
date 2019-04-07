@@ -1,8 +1,8 @@
 package ua.vadym.api.v1.mapper;
 
 import org.junit.Test;
-import ua.vadym.api.v1.model.CustomerDTO;
 import ua.vadym.domain.Customer;
+import ua.vadym.model.CustomerDTO;
 
 import static org.junit.Assert.assertEquals;
 

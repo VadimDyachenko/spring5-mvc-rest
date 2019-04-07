@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import ua.vadym.api.v1.model.CustomerDTO;
-import ua.vadym.api.v1.model.CustomerListDTO;
+
+import ua.vadym.model.CustomerDTO;
+import ua.vadym.model.CustomerListDTO;
 import ua.vadym.services.CustomerService;
 
 @Api(description = "There is simple Customer controller")
@@ -32,7 +33,9 @@ public class CustomerController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CustomerListDTO getAllCustomers() {
-        return new CustomerListDTO(service.getAllCustomers());
+        CustomerListDTO customerListDTO = new CustomerListDTO();
+        customerListDTO.getCustomers().addAll(service.getAllCustomers());
+        return customerListDTO;
     }
 
     @ApiOperation(value = "Get Customer by id.")

@@ -3,10 +3,10 @@ package ua.vadym.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ua.vadym.api.v1.mapper.CustomerMapper;
-import ua.vadym.api.v1.model.CustomerDTO;
 import ua.vadym.domain.Customer;
 import ua.vadym.exceptions.ApplicationException;
 import ua.vadym.exceptions.ResourceNotFoundError;
+import ua.vadym.model.CustomerDTO;
 import ua.vadym.repository.CustomerRepository;
 
 import java.util.List;
@@ -88,7 +88,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private CustomerDTO getCustomerDTO(Customer customer) {
         CustomerDTO customerDTO = customerMapper.customerToCustomerDto(customer);
-        customerDTO.setUrl("/api/v1/customers/" + customer.getId());
+        customerDTO.setCustomerUrl("/api/v1/customers/" + customer.getId());
         return customerDTO;
     }
 }

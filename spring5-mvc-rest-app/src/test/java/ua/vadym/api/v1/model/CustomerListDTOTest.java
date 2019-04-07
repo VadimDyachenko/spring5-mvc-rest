@@ -1,6 +1,8 @@
 package ua.vadym.api.v1.model;
 
 import org.junit.Test;
+import ua.vadym.model.CustomerDTO;
+import ua.vadym.model.CustomerListDTO;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,14 +15,15 @@ public class CustomerListDTOTest {
 
     @Test
     public void getCustomers_shouldReturnEmptyList() {
-        CustomerListDTO list = new CustomerListDTO(null);
+        CustomerListDTO list = new CustomerListDTO();
         assertTrue(list.getCustomers().isEmpty());
     }
 
     @Test
     public void getCustomers() {
         List<CustomerDTO> customerDTOList = Arrays.asList(new CustomerDTO(), new CustomerDTO());
-        CustomerListDTO list = new CustomerListDTO(customerDTOList);
+        CustomerListDTO list = new CustomerListDTO();
+        list.getCustomers().addAll(customerDTOList);
         assertThat(customerDTOList, is(list.getCustomers()));
     }
 }

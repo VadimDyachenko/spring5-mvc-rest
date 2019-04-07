@@ -1,6 +1,6 @@
 package ua.vadym.services;
 
-import ua.vadym.api.v1.model.CustomerDTO;
+import ua.vadym.model.CustomerDTO;
 
 import java.util.List;
 

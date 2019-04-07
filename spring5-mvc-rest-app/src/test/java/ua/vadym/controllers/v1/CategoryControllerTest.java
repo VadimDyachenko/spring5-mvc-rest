@@ -20,7 +20,6 @@ public class CategoryControllerTest extends AbstractControllerTest{
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonFromFile("json/CategoryControllerTest/getListCategories_expected.json"));
-
     }
 
     @Test
@@ -29,7 +28,6 @@ public class CategoryControllerTest extends AbstractControllerTest{
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonFromFile("json/CategoryControllerTest/findByName_expected.json"));
-
     }
 
     @Test
